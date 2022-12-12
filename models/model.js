@@ -12,3 +12,10 @@ exports.selectReviews = (req, res) => {
         return results.rows;
     })
 }
+
+exports.selectCategories = (req, res) => {
+    return db.query(`SELECT * FROM categories`)
+    .then((results) => {
+        return results.rows;
+    })
+}
