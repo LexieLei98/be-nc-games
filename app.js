@@ -1,9 +1,10 @@
 const express = require('express');
-const {getCategories,} = require('./controllers/controller.games');
-const {handle404Errors, handleOtherErrors, handle500Errors} = require('./controllers/controller.errors')
+const {getCategories, getReviews} = require('./controllers/controller.games');
+const {handle404Errors} = require('./controllers/controller.errors')
 
 const app = express();
 
+app.get('/api/reviews', getReviews);
 app.get('/api/categories', getCategories);
 
 app.all('*', handle404Errors);
