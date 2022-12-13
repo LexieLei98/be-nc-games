@@ -131,7 +131,7 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
                             created_at:expect.any(String),
                             author:expect.any(String),
                             body: expect.any(String),
-                            review_id: expect.any(Number),
+                            review_id: 2,
                         })
                     )
                 })
