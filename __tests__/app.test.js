@@ -121,8 +121,8 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
         .expect(200)
         .then(({body}) => {
             const {comments} = body;
-                expect(comments).toBeInstanceOf(Array);
                 expect(comments).toHaveLength(3);
+                expect(comments).toBeSortedBy('created_at', {descending: true});
                 comments.forEach((comment) => {
                     expect(comment).toEqual(
                         expect.objectContaining({
