@@ -113,3 +113,58 @@ describe('GET /api/reviews/:review_id', () => {
     })
 
 })
+
+describe('6. GET /api/reviews/:review_id/comments', () => {
+    test('status:200 returns the array of comments of the given review_id', () => {
+        return request(app)
+        .get(`/api/reviews/2/comments`)
+        .expect(200)
+        .then(({body}) => {
+            const {comments} = body;
+                expect(comments).toHaveLength(3);
+                expect(comments).toBeSortedBy('created_at', {descending: true});
+                comments.forEach((comment) => {
+                    expect(comment).toEqual(
+                        expect.objectContaining({
+                            comment_id: expect.any(Number),
+                            votes:expect.any(Number),
+                            created_at:expect.any(String),
+                            author:expect.any(String),
+                            body: expect.any(String),
+                            review_id: 2,
+                        })
+                    )
+                })
+        })
+    })
+
+    test('status:200 returns an empty array when review_id is valid but no comments of the given id', () => {
+        return request(app)
+        .get(`/api/reviews/1/comments`)
+        .expect(200)
+        .then(({body}) => {
+            const {comments} = body;
+            expect(comments).toEqual([])
+        })
+    })
+
+    test('status:404 returns NOT FOUND when review_id is not valid', () => {
+        const ID = 999;
+        return request(app)
+        .get(`/api/reviews/${ID}/comments`)
+        .expect(404)
+        .then((response) => {
+            const msg = response.body.msg;
+            expect(msg).toBe('NOT FOUND!')
+        })
+    })
+
+    test('status:400 returns BAD REQUEST when review_id is not a number', () => {
+        return request(app)
+        .get(`/api/reviews/snow/comments`)
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('BAD REQUEST!')
+        })
+    })
+})
