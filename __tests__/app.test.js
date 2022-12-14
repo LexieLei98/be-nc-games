@@ -239,5 +239,26 @@ describe('7. POST /api/reviews/:review_id/comments', () => {
             expect(body.msg).toBe('NOT FOUND!')
         })
     })
+    test('status:201 returns the posted comment ', () => {
+        const newComment = {
+            username:'bainesface',
+            body:'I love this game!',
+            location:'London'
+        }
+        return request(app)
+        .post('/api/reviews/2/comments')
+        .send(newComment)
+        .expect(201)
+        .then(({body}) => {
+            expect(body.comments).toEqual({
+                comment_id:7,
+                author:'bainesface',
+                body:'I love this game!',
+                created_at: expect.any(String),
+                review_id: 2,
+                votes: 0,
+            })
+        })
+    });
 })
 
