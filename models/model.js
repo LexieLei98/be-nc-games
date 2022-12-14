@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const comments = require('../db/data/test-data/comments');
 
 exports.selectReviews = (req, res) => {
     return db.query(`
@@ -39,5 +40,18 @@ exports.selectComments = (ID) => {
     ORDER BY created_at DESC;`, [ID])
     .then((results) => {
         return results.rows;
+    })
+}
+
+exports.insertComments = (newComment, ID) => {
+    const {username, body} = newComment;
+    return db.query(`
+    INSERT INTO comments
+    (body, review_id, author)
+    VALUES
+    ($1, $2, $3)
+    RETURNING *;`,[body, ID, username])
+    .then((results) => {
+        return results.rows[0]
     })
 }
