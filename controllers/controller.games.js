@@ -1,4 +1,4 @@
-const {selectReviews,selectCategories,selectReviewID, selectComments, insertComments, updateVotes, selectUsers} = require('../models/model');
+const {selectReviews,selectCategories,selectReviewID, selectComments, insertComments, updateVotes, selectUsers, removeComments} = require('../models/model');
 
 exports.getReviews = (req, res, next) => {
     const { category, sort_by, order } = req.query
@@ -80,3 +80,13 @@ exports.getUsers = (req, res, next) => {
             next(err)
         })
 };
+
+exports.deleteComments = (req, res, next) => {
+    const ID = req.params.comment_id;
+    removeComments(ID).then((comment) => {
+      res.status(204).send({comment})
+    })
+   .catch((err) => {
+            next(err)
+        })
+  };
