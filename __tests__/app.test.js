@@ -448,4 +448,13 @@ describe('10. GET /api/reviews (queries)', () => {
                 expect(reviews).toEqual([])
             })
     })
+    test('status:200, returns the array for multiple queries', () => {
+        return request(app)
+            .get('/api/reviews?sort_by=title&&order=ASC')
+            .expect(200)
+            .then(({body}) => {
+                const { reviews } = body;
+                expect(reviews).toBeSortedBy('title', {descending: false});
+            })
+    })
 })
