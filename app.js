@@ -1,5 +1,5 @@
 const express = require('express');
-const {getCategories, getReviews, getReviewID, getComments, postComments} = require('./controllers/controller.games');
+const {getCategories, getReviews, getReviewID, getComments, postComments, patchVotes} = require('./controllers/controller.games');
 const {handle404Errors, handleOtherErrors, handle500Errors} = require('./error_handling')
 
 const app = express();
@@ -11,6 +11,7 @@ app.get('/api/reviews/:review_id', getReviewID)
 app.get('/api/reviews/:review_id/comments', getComments)
 
 app.post('/api/reviews/:review_id/comments', postComments)
+app.patch('/api/reviews/:review_id',patchVotes)
 
 
 app.use(handleOtherErrors);
