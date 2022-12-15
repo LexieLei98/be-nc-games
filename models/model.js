@@ -20,7 +20,7 @@ exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC',) => {
     ON comments.review_id = reviews.review_id `
 
     if(category !== undefined && !vaildCategoryQueries.includes(category)){
-        return Promise.reject({status: 400, msg:'BAD REQUEST'})
+        return Promise.reject({status: 404, msg:'NOT FOUND'})
     }else if(category !== undefined && vaildCategoryQueries.includes(category)){
         queryString += `WHERE category = $1 `
         queryValues.push(category)

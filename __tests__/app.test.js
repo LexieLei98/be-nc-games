@@ -412,13 +412,13 @@ describe('10. GET /api/reviews (queries)', () => {
                 expect(reviews).toBeSortedBy('title', {descending: true});
             })
     })
-    test('status:400, returnsBAD REQUEST when no such catergory ', () => {
+    test('status:404, returnsBAD REQUEST when no such catergory ', () => {
         return request(app)
             .get('/api/reviews?category=snow')
-            .expect(400)
+            .expect(404)
             .then((response) => {
                 const message = response.body.msg
-                expect(message).toBe('BAD REQUEST')
+                expect(message).toBe('NOT FOUND')
             })
     })
     test('status:400, returns BAD REQUEST when no such order', () => {
