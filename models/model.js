@@ -1,7 +1,7 @@
 const db = require('../db/connection');
 const comments = require('../db/data/test-data/comments');
 
-exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC', req, res) => {
+exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC',) => {
 
     const vaildCategoryQueries = ['euro game', 'dexterity', 'social deduction', "children''s games"]
     const vaildSortByQueries = ['created_at', 'category', 'title', 'designer', 'owner', 'review_img_url', 'review_body', 'votes'];
