@@ -1,7 +1,7 @@
 const db = require('../db/connection');
 const comments = require('../db/data/test-data/comments');
 
-exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC', req, res) => {
+exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC',) => {
 
     const vaildCategoryQueries = ['euro game', 'dexterity', 'social deduction', "children''s games"]
     const vaildSortByQueries = ['created_at', 'category', 'title', 'designer', 'owner', 'review_img_url', 'review_body', 'votes'];
@@ -20,7 +20,7 @@ exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC', req, 
     ON comments.review_id = reviews.review_id `
 
     if(category !== undefined && !vaildCategoryQueries.includes(category)){
-        return Promise.reject({status: 400, msg:'BAD REQUEST'})
+        return Promise.reject({status: 404, msg:'NOT FOUND'})
     }else if(category !== undefined && vaildCategoryQueries.includes(category)){
         queryString += `WHERE category = $1 `
         queryValues.push(category)

@@ -412,16 +412,16 @@ describe('10. GET /api/reviews (queries)', () => {
                 expect(reviews).toBeSortedBy('title', {descending: true});
             })
     })
-    test('status:400, returns NOT FOUND when no such catergory ', () => {
+    test('status:404, returnsBAD REQUEST when no such catergory ', () => {
         return request(app)
             .get('/api/reviews?category=snow')
-            .expect(400)
+            .expect(404)
             .then((response) => {
                 const message = response.body.msg
-                expect(message).toBe('BAD REQUEST')
+                expect(message).toBe('NOT FOUND')
             })
     })
-    test('status:400, returns NOT FOUND when no such order', () => {
+    test('status:400, returns BAD REQUEST when no such order', () => {
         return request(app)
             .get('/api/reviews?order=snow')
             .expect(400)
@@ -430,13 +430,31 @@ describe('10. GET /api/reviews (queries)', () => {
                 expect(message).toBe('BAD REQUEST')
             })
     })
-    test('status:400, returns the array with no such sort by', () => {
+    test('status:400, returns BAD REQUEST with no such sort by', () => {
         return request(app)
             .get('/api/reviews?sort_by=snow')
             .expect(400)
             .then((response) => {
                 const message = response.body.msg
                 expect(message).toBe('BAD REQUEST')
+            })
+    })
+    test("status:200, returns the empty array if category is children''s games", () => {
+        return request(app)
+            .get("/api/reviews?category=children''s games")
+            .expect(200)
+            .then(({body}) => {
+                const { reviews } = body;
+                expect(reviews).toEqual([])
+            })
+    })
+    test('status:200, returns the array for multiple queries', () => {
+        return request(app)
+            .get('/api/reviews?sort_by=title&&order=ASC')
+            .expect(200)
+            .then(({body}) => {
+                const { reviews } = body;
+                expect(reviews).toBeSortedBy('title', {descending: false});
             })
     })
 })
