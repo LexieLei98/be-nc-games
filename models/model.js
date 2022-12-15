@@ -69,4 +69,11 @@ exports.updateVotes = (newVotes, ID) => {
         }
         return results.rows[0]
     })
+};
+
+exports.selectUsers = (req, res) => {
+    return db.query(`SELECT * FROM users`)
+    .then((results) => {
+        return results.rows;
+    })
 }

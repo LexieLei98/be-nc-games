@@ -1,4 +1,4 @@
-const {selectReviews,selectCategories,selectReviewID, selectComments, insertComments, updateVotes} = require('../models/model');
+const {selectReviews,selectCategories,selectReviewID, selectComments, insertComments, updateVotes, selectUsers} = require('../models/model');
 
 exports.getReviews = (req, res, next) => {
     selectReviews()
@@ -68,4 +68,14 @@ exports.patchVotes = (req, res, next) => {
     .catch((err) => {
         next(err)
     })
-}
+};
+
+exports.getUsers = (req, res, next) => {
+    selectUsers()
+    .then((users) => {
+        res.status(200).send({users})
+    })
+    .catch((err) => {
+            next(err)
+        })
+};
