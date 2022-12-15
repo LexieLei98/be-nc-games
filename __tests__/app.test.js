@@ -168,3 +168,97 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
         })
     })
 })
+
+describe('7. POST /api/reviews/:review_id/comments', () => {
+    test('status:201 returns the posted comment ', () => {
+        const newComment = {
+            username:'bainesface',
+            body:'I love this game!',
+        }
+        return request(app)
+        .post('/api/reviews/2/comments')
+        .send(newComment)
+        .expect(201)
+        .then(({body}) => {
+            expect(body.comments).toEqual({
+                comment_id:7,
+                author:'bainesface',
+                body:'I love this game!',
+                created_at: expect.any(String),
+                review_id: 2,
+                votes: 0,
+            })
+        })
+    });
+    test('status:400 returns BAD REQUEST when missing keys in the body', () => {
+        const newComment = {};
+        return request(app)
+        .post('/api/reviews/2/comments')
+        .send(newComment)
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('BAD REQUEST!')
+        })
+    })
+    test('status:400 returns BAD REQUEST when review id is not a number ', () => {
+        const newComment = {
+            username:'coctealei',
+            body:'I love this game!',
+        }
+        return request(app)
+        .post('/api/reviews/snow/comments')
+        .send(newComment)
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('BAD REQUEST!')
+        })
+    })
+    test('status:404 returns NOT FOUND when non existent review_id ', () => {
+        const newComment = {
+            username:'bainesface',
+            body:'I love this game!',
+        }
+        return request(app)
+        .post('/api/reviews/99/comments')
+        .send(newComment)
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('NOT FOUND!')
+        })
+    })
+    test('status:404 returns NOT FOUND when non existent username ', () => {
+        const newComment = {
+            username:'cocatealei',
+            body:'I love this game!',
+        }
+        return request(app)
+        .post('/api/reviews/2/comments')
+        .send(newComment)
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('NOT FOUND!')
+        })
+    })
+    test('status:201 returns the posted comment ', () => {
+        const newComment = {
+            username:'bainesface',
+            body:'I love this game!',
+            location:'London'
+        }
+        return request(app)
+        .post('/api/reviews/2/comments')
+        .send(newComment)
+        .expect(201)
+        .then(({body}) => {
+            expect(body.comments).toEqual({
+                comment_id:7,
+                author:'bainesface',
+                body:'I love this game!',
+                created_at: expect.any(String),
+                review_id: 2,
+                votes: 0,
+            })
+        })
+    });
+})
+
