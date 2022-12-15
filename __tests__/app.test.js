@@ -378,3 +378,65 @@ describe('GET /api/users', () => {
             })
     })
 })
+
+describe('10. GET /api/reviews (queries)', () => {
+    test('status:200, returns the array with specific catergory', () => {
+        return request(app)
+            .get('/api/reviews?category=euro game')
+            .expect(200)
+            .then(({body}) => {
+                const { reviews } = body;
+                expect(reviews).toBeSortedBy('created_at', {descending: true});
+                reviews.forEach((review) => {
+                    expect.objectContaining({
+                        category:'euro game',
+                    })
+                })
+            })
+    })
+    test('status:200, returns the array with ASC order', () => {
+        return request(app)
+            .get('/api/reviews?order=ASC')
+            .expect(200)
+            .then(({body}) => {
+                const { reviews } = body;
+                expect(reviews).toBeSortedBy('created_at', {descending: false});
+            })
+    })
+    test('status:200, returns the array sorted by title', () => {
+        return request(app)
+            .get('/api/reviews?sort_by=title')
+            .expect(200)
+            .then(({body}) => {
+                const { reviews } = body;
+                expect(reviews).toBeSortedBy('title', {descending: true});
+            })
+    })
+    test('status:400, returns NOT FOUND when no such catergory ', () => {
+        return request(app)
+            .get('/api/reviews?category=snow')
+            .expect(400)
+            .then((response) => {
+                const message = response.body.msg
+                expect(message).toBe('BAD REQUEST')
+            })
+    })
+    test('status:400, returns NOT FOUND when no such order', () => {
+        return request(app)
+            .get('/api/reviews?order=snow')
+            .expect(400)
+            .then((response) => {
+                const message = response.body.msg
+                expect(message).toBe('BAD REQUEST')
+            })
+    })
+    test('status:400, returns the array with no such sort by', () => {
+        return request(app)
+            .get('/api/reviews?sort_by=snow')
+            .expect(400)
+            .then((response) => {
+                const message = response.body.msg
+                expect(message).toBe('BAD REQUEST')
+            })
+    })
+})

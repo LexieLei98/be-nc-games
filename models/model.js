@@ -1,14 +1,34 @@
 const db = require('../db/connection');
 const comments = require('../db/data/test-data/comments');
 
-exports.selectReviews = (req, res) => {
-    return db.query(`
+exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC', req, res) => {
+
+    const vaildCategoryQueries = ['euro game', 'dexterity', 'social deduction', "children''s games"]
+    const vaildSortByQueries = ['created_at', 'category', 'title', 'designer', 'owner', 'review_img_url', 'review_body', 'votes'];
+    const vaildOrderQueries = ['ASC', 'DESC'];
+
+    
+    if(!vaildSortByQueries.includes(sort_by) || !vaildOrderQueries.includes(order)){
+        return Promise.reject({status: 400, msg:'BAD REQUEST'})
+    }
+
+    const queryValues = []
+    let queryString = `
     SELECT reviews.*, COUNT(comment_id) AS comment_count
     FROM comments
     RIGHT OUTER JOIN reviews
-    ON comments.review_id = reviews.review_id
-    GROUP BY reviews.review_id
-    ORDER BY created_at DESC;`)
+    ON comments.review_id = reviews.review_id `
+
+    if(category !== undefined && !vaildCategoryQueries.includes(category)){
+        return Promise.reject({status: 400, msg:'BAD REQUEST'})
+    }else if(category !== undefined && vaildCategoryQueries.includes(category)){
+        queryString += `WHERE category = $1 `
+        queryValues.push(category)
+    }
+    
+    queryString += `GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`
+
+    return db.query(queryString, queryValues)
     .then((results) => {
         return results.rows;
     })
