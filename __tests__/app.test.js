@@ -270,7 +270,6 @@ describe('8. PATCH /api/reviews/:review_id', () => {
         .send(newVotes)
         .expect(200)
         .then(({body}) => {
-            console.log(body)
             expect(body.review).toEqual({
                 review_id: 1,
                 title: 'Agricola',
@@ -292,7 +291,6 @@ describe('8. PATCH /api/reviews/:review_id', () => {
         .send(newVotes)
         .expect(200)
         .then(({body}) => {
-            console.log(body)
             expect(body.review).toEqual({
                 review_id: 1,
                 title: 'Agricola',
