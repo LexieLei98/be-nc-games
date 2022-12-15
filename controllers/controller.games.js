@@ -1,4 +1,4 @@
-const {selectReviews,selectCategories,selectReviewID, selectComments, insertComments} = require('../models/model');
+const {selectReviews,selectCategories,selectReviewID, selectComments, insertComments, updateVotes} = require('../models/model');
 
 exports.getReviews = (req, res, next) => {
     selectReviews()
@@ -56,3 +56,16 @@ exports.postComments = (req, res, next) => {
         next(err)
     })
 };
+
+exports.patchVotes = (req, res, next) => {
+    const ID = req.params.review_id;
+    const newVotes = req.body;
+
+    updateVotes(newVotes, ID)
+    .then((review) => {
+        res.status(200).send({review})
+    })
+    .catch((err) => {
+        next(err)
+    })
+}

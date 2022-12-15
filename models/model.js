@@ -55,3 +55,18 @@ exports.insertComments = (newComment, ID) => {
         return results.rows[0]
     })
 }
+
+exports.updateVotes = (newVotes, ID) => {
+    const { inc_votes } = newVotes;
+    return db.query(`
+    UPDATE reviews
+    SET votes = votes + $1
+    WHERE review_id = $2
+    RETURNING*;`, [inc_votes, ID])
+    .then((results) => {
+        if(results.rowCount === 0) {
+            return Promise.reject({status: 404, msg:'NOT FOUND!'})
+        }
+        return results.rows[0]
+    })
+}

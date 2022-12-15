@@ -262,3 +262,100 @@ describe('7. POST /api/reviews/:review_id/comments', () => {
     });
 })
 
+describe('8. PATCH /api/reviews/:review_id', () => {
+    test('status:200 returns the updated review', () => {
+        const newVotes = { inc_votes : 1 }
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVotes)
+        .expect(200)
+        .then(({body}) => {
+            expect(body.review).toEqual({
+                review_id: 1,
+                title: 'Agricola',
+                category: 'euro game',
+                designer: 'Uwe Rosenberg',
+                owner: 'mallionaire',
+                review_body: 'Farmyard fun!',
+                review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                created_at: '2021-01-18T10:00:20.514Z',
+                votes: 2
+            })
+        })
+    });
+
+    test('status:200 when body with extra keys', () => {
+        const newVotes = { inc_votes : 1, location : 'London' }
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVotes)
+        .expect(200)
+        .then(({body}) => {
+            expect(body.review).toEqual({
+                review_id: 1,
+                title: 'Agricola',
+                category: 'euro game',
+                designer: 'Uwe Rosenberg',
+                owner: 'mallionaire',
+                review_body: 'Farmyard fun!',
+                review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                created_at: '2021-01-18T10:00:20.514Z',
+                votes: 2
+            })
+        })
+    });
+
+    test('status:400 returns BAD REQUEST when missing keys in the body', () => {
+        const newVotes = {};
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVotes)
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('BAD REQUEST!')
+        })
+    });
+
+    test('status:404 returns NOT FOUND when non existent review_id ', () => {
+        const newVotes = { inc_votes : 1 }
+        return request(app)
+        .patch('/api/reviews/99')
+        .send(newVotes)
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('NOT FOUND!')
+        })
+    });
+
+    test('status:400 returns BAD REQUEST when review id is not a number ', () => {
+        const newVotes = { inc_votes : 1 }
+        return request(app)
+        .patch('/api/reviews/snow')
+        .send(newVotes)
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('BAD REQUEST!')
+        })
+    });
+
+    test('status:400 returns BAD REQUEST when given the wrong key', () => {
+        const newVotes = { 'snow' : 1 }
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVotes)
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('BAD REQUEST!')
+        })
+    });
+    test('status:400 returns BAD REQUEST when the votes are not a number', () => {
+        const newVotes = { inc_votes : 'snow' }
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVotes)
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('BAD REQUEST!')
+        })
+    });
+})
