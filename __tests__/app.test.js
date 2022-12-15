@@ -77,7 +77,7 @@ describe('GET /api/reviews/:review_id', () => {
         .get(`/api/reviews/${ID}`)
         .expect(200)
         .then(({body}) => {
-            expect(body.review).toEqual({
+            expect(body.review).toMatchObject({
                 review_id: ID,
                 title: 'Agricola',
                 designer: 'Uwe Rosenberg',
@@ -456,5 +456,18 @@ describe('10. GET /api/reviews (queries)', () => {
                 const { reviews } = body;
                 expect(reviews).toBeSortedBy('title', {descending: false});
             })
+    })
+})
+
+describe('11. GET /api/reviews/:review_id (comment count)', () => {
+    test('status:200 returns an object with required properties and comment counts', () => {
+        return request(app)
+        .get(`/api/reviews/1`)
+        .expect(200)
+        .then(({body}) => {
+            expect(body.review).toMatchObject({
+            comment_count:'0',
+            })
+        })
     })
 })
