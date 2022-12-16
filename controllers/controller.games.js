@@ -83,8 +83,8 @@ exports.getUsers = (req, res, next) => {
 
 exports.deleteComments = (req, res, next) => {
     const ID = req.params.comment_id;
-    removeComments(ID).then((comment) => {
-      res.status(204).send({comment})
+    removeComments(ID).then(() => {
+      res.sendStatus(204)
     })
    .catch((err) => {
             next(err)

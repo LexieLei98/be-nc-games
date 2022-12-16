@@ -474,7 +474,9 @@ describe('11. GET /api/reviews/:review_id (comment count)', () => {
 
 describe('12. DELETE /api/comments/:comment_id', () => {
     test('status:204, responds with an empty response body', () => {
-      return request(app).delete('/api/comments/2').expect(204);
+      return request(app)
+      .delete('/api/comments/2')
+      .expect(204);
     });
 
     test('status:404 returns BAD REQUEST when comment id is invaild', () => {
