@@ -499,3 +499,15 @@ describe('12. DELETE /api/comments/:comment_id', () => {
         })
     })
   });
+
+
+describe('13. GET /api', () => {
+    test('200: responds with object of different endpoints', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({body : {endpoints}}) => {
+            expect(endpoints).toBeInstanceOf(Object)
+        })
+    })
+});
