@@ -1,5 +1,7 @@
-## Instructions for this GAMES API!
+## Summary
+This project creates a game API so you can get access to data by using different endpoints
 
+## Instructions for this GAMES API!
 Once you have cloned down the project, be sure to run `npm install` to instal all the relevant packages. Most of what you need is there already, but you will additionally need to install `express` and `supertest`
 
 
