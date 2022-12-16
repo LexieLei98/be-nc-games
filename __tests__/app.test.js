@@ -471,3 +471,31 @@ describe('11. GET /api/reviews/:review_id (comment count)', () => {
         })
     })
 })
+
+describe('12. DELETE /api/comments/:comment_id', () => {
+    test('status:204, responds with an empty response body', () => {
+      return request(app)
+      .delete('/api/comments/2')
+      .expect(204);
+    });
+
+    test('status:404 returns BAD REQUEST when comment id is invaild', () => {
+        return request(app)
+        .delete('/api/comments/99')
+        .expect(404)
+        .then((response) => {
+            const msg = response.body.msg;
+            expect(msg).toBe('NOT FOUND!')
+        })
+    })
+
+    test('status:400 returns BAD REQUEST when comment id is not a number', () => {
+        return request(app)
+        .delete('/api/comments/snow')
+        .expect(400)
+        .then((response) => {
+            const message = response.body.msg
+            expect(message).toBe('BAD REQUEST!')
+        })
+    })
+  });
