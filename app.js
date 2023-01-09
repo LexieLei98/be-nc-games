@@ -2,9 +2,11 @@ const express = require('express');
 const {getCategories, getReviews, getReviewID, getComments, postComments, patchVotes, getUsers, deleteComments} = require('./controllers/controller.games');
 const {handle404Errors, handleOtherErrors, handle500Errors} = require('./error_handling')
 const {getEndpoints} = require('./endpoints')
+const cors = require('cors')
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.get('/api/reviews', getReviews);
 app.get('/api/categories', getCategories);
