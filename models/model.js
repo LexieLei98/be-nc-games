@@ -5,7 +5,7 @@ exports.selectReviews = (category, sort_by = 'created_at', order = 'DESC',) => {
 
     const vaildCategoryQueries = ['euro game', 'dexterity', 'social deduction', "children''s games", 
     'strategy', 'hidden-roles', 'push-your-luck', 'roll-and-write', 'deck-building', 'engine-building']
-    const vaildSortByQueries = ['created_at', 'category', 'title', 'designer', 'owner', 'review_img_url', 'review_body', 'votes'];
+    const vaildSortByQueries = ['created_at', 'category', 'title', 'designer', 'owner', 'review_img_url', 'review_body', 'votes','comment_count'];
     const vaildOrderQueries = ['ASC', 'DESC'];
 
     if(!vaildSortByQueries.includes(sort_by) || !vaildOrderQueries.includes(order)){
